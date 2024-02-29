@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages</title>
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-finance-business.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+  </head>
+  <body>
+    <% if (data.length > 0) { %>
+    <table class="container table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>SN</th>
+          <th>Full Name</th>
+          <th colspan="2">Email</th>
+          <th>Message</th>
+          <th>Phone Number</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% data.forEach(function(message,index) { %>
+        <tr>
+          <td><%= index+1 %></td>
+          <td><%= message.name %></td>
+          <td colspan="2"><%= message.email %></td>
+          <td><%= message.message %></td>
+          <td><%= message.phone %></td>
+          <td><%= new Date(message.createdAt).toLocaleString() %></td>
+          <td>
+            <a
+              style="cursor: pointer; text-align: center"
+              onclick="onDelete()"
+              data-id="<%-message.id%>"
+              >X</a
+            >
+          </td>
+        </tr>
+        <% })%>
+      </tbody>
+    </table>
+    <% } else { %>
+
+    <h1>No Messages</h1>
+
+    <% } %>
+  </body>
+
+  <script>
+    const onDelete = () => {
+      const id = event.target.getAttribute("data-id");
+      const url = `https://honoraconsult.herokuapp.com/user/delete/${id}`;
+      fetch(url, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          window.location.reload();
+        });
+    };
+  </script>
+</html>
